@@ -1,0 +1,1 @@
+<% response.sendRedirect("student?action=loadAddForm"); %>

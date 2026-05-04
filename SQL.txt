@@ -1,0 +1,89 @@
+DROP DATABASE IF EXISTS QLSV;
+
+create database QLSV
+CHARACTER SET utf8mb4 
+COLLATE utf8mb4_unicode_ci;
+
+USE QLSV;
+
+create table TRUONG (
+	MaTruong varchar(20) primary key,
+    TenTruong varchar(255),
+    DiaChi varchar(255),
+    SoDT varchar(15)
+);
+
+create table NGANH (
+	MaNganh varchar(20) primary key,
+    TenNganh varchar(255), 
+    LoaiNganh varchar(255)
+);
+
+create table SINHVIEN(
+	SoCMND varchar(20) primary key,
+    HoTen varchar(100),
+    Email varchar(100),
+    SoDT varchar(15),
+    DiaChi varchar(255)
+);
+
+create table TOT_NGHIEP(
+	SoCMND VARCHAR(20),
+    MaTruong VARCHAR(20),
+    MaNganh VARCHAR(20),
+    HeTN VARCHAR(50),
+    NgayTN DATE,
+    LoaiTN VARCHAR(50),
+    primary key (SoCMND, MaTruong, MaNganh),
+    foreign key (SoCMND) references SINHVIEN(SoCMND),
+    foreign key (MaTruong) references TRUONG(MaTruong),
+    foreign key (MaNganh) references NGANH(MaNganh)
+); 
+
+create table CONG_VIEC(
+	SoCMND VARCHAR(20),
+    NgayVaoCongTy DATE,
+    TenCongTy VARCHAR(255),
+    DiaChiCongTy VARCHAR(255),
+    ThoiGianLamViec VARCHAR(100),
+    primary key (SoCMND, NgayVaoCongTy),
+    foreign key (SoCMND) references SINHVIEN(SoCMND)
+);
+
+INSERT INTO TRUONG (MaTruong, TenTruong, DiaChi, SoDT) VALUES 
+('QN-01', 'Đại học Quy Nhơn', '170 An Dương Vương, Quy Nhơn', '0256 3846 156'),
+('FPT-QN', 'Đại học FPT Quy Nhơn', 'Khu đô thị mới An Phú Thịnh, Quy Nhơn', '0256 7300 999'),
+('QT-01', 'Đại học Quang Trung', '139 Trần Hưng Đạo, Quy Nhơn', '0256 2241 037'),
+('CDKT-QN', 'Cao đẳng Kỹ thuật Công nghệ Quy Nhơn', '172 An Dương Vương, Quy Nhơn', '0256 3846 486');
+
+INSERT INTO NGANH (MaNganh, TenNganh, LoaiNganh) VALUES 
+('IT-SE', 'Kỹ thuật phần mềm', 'Công nghệ thông tin'),
+('IT-CS', 'Khoa học máy tính', 'Công nghệ thông tin'),
+('IT-IS', 'Hệ thống thông tin', 'Công nghệ thông tin'),
+('BA-MKT', 'Quản trị Marketing', 'Kinh tế'),
+('BA-RE', 'Quản trị Bất động sản', 'Kinh tế');
+
+drop table TOT_NGHIEP;
+truncate table TRUONG;
+TRUNCATE TABLE NGANH;
+
+DELETE FROM TOT_NGHIEP; -- Xóa dữ liệu bảng con trước
+DELETE FROM SINHVIEN;  -- Xóa dữ liệu bảng cha sau
+
+select *from SINHVIEN;
+select *from NGANH;
+select *from TOT_NGHIEP;
+
+
+
+
+SET FOREIGN_KEY_CHECKS = 0; -- Tắt kiểm tra khóa ngoại
+SET SQL_SAFE_UPDATES = 0;   -- Tắt chế độ cập nhật an toàn
+
+DELETE FROM TOT_NGHIEP;
+DELETE FROM SINHVIEN;
+
+SET SQL_SAFE_UPDATES = 1;   -- Bật lại chế độ an toàn
+SET FOREIGN_KEY_CHECKS = 1; -- Bật lại kiểm tra khóa ngoại
+
+
